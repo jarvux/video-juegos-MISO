@@ -2,3 +2,4 @@ pygame
 esper
 pygbag
 pyinstaller
+python-json-config

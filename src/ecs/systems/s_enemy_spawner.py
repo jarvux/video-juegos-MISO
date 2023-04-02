@@ -1,24 +1,32 @@
-
 import pygame
+
 import esper
 from src.create.prefab_creator import crear_cuadrado
-from src.ecs.components.c_surface import CSurface
-from src.ecs.components.c_transform import CTransform
-from src.ecs.components.c_velocity import CVelocity
-from src.ecs.components.c_enemy_spawner import CEnemySpawner
-from src.ecs.events.e_spawn_data import getData
-def crear_rect(ecs_world:esper.World): 
-    enemies = getData('src/config/enemies.json') 
-    levels  = getData('src/config/level_01.json') 
-    for enemie in levels['enemy_spawn_events'] : 
-        if not enemie :
-           continue
-        config = enemies[enemie['enemy_type']]
+from python_json_config import ConfigBuilder
+
+builder = ConfigBuilder()
+
+
+def crear_rect(ecs_world: esper.World):
+
+    levels = builder.parse_config('src/config/level_01.json')
+    enemies = builder.parse_config('src/config/enemies.json')
+
+    for level in levels.enemy_spawn_events:
+        if not level:
+            continue
+
+        time = level['time']
+        enemy_type = level['enemy_type']
+        position = level['position']
+        enemy = getattr(enemies, enemy_type)
+
+        if enemy is None:
+            continue
+
         crear_cuadrado(ecs_world,
-                    pygame.Vector2(config['size']['x'],config['size']['y']),
-                    pygame.Vector2(enemie['position']['x'],enemie['position']['y']),
-                    pygame.Vector2(config['velocity_min'],config['velocity_max']),
-                    pygame.Color(config['color']['r'],config['color']['g'],config['color']['b']),
-                    enemie['time']
-                    )
-    
+                       pygame.Vector2(enemy.size.x, enemy.size.y),
+                       pygame.Vector2(position['x'], position['y']),
+                       pygame.Vector2(enemy.velocity_min, enemy.velocity_max),
+                       pygame.Color(enemy.color.r, enemy.color.g, enemy.color.b),
+                       time)
