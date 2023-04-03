@@ -2,15 +2,13 @@ import pygame
 
 import esper
 from src.create.prefab_creator import crear_cuadrado
-from python_json_config import ConfigBuilder
-
-builder = ConfigBuilder()
+from src.ecs.events.e_spawn_data import SpawnEventData
 
 
 def crear_rect(ecs_world: esper.World):
-
-    levels = builder.parse_config('src/config/level_01.json')
-    enemies = builder.parse_config('src/config/enemies.json')
+    spawn = SpawnEventData()
+    levels = spawn.levels()
+    enemies = spawn.enemies()
 
     for level in levels.enemy_spawn_events:
         if not level:

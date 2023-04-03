@@ -1,11 +1,14 @@
-import json
+from python_json_config import ConfigBuilder
 
 
-'''
-def load_config_file(path: str):
-    with open(path, "r") as json_file:
-        data = json.load(json_file)
-        print("Write successful")
-        json_file.close()
-    return data
-'''
+class SpawnEventData:
+    def __init__(self):
+        self.builder = ConfigBuilder()
+
+    def enemies(self):
+        enemies = self.builder.parse_config('src/configs/enemies.json')
+        return enemies
+
+    def levels(self):
+        levels = self.builder.parse_config('src/configs/level_01.json')
+        return levels

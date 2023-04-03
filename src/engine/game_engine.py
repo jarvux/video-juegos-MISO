@@ -1,7 +1,7 @@
 import pygame
 
 import esper
-from src.ecs.systems.s_enemy_spawner import crear_rect
+from src.ecs.systems.system_enemy_spawner import crear_rect
 from src.ecs.systems.s_movement import system_movement
 from src.ecs.systems.s_rendering import system_rendering
 from src.ecs.systems.s_screen_bounce import system_screen_bounce
@@ -15,7 +15,7 @@ def _clean():
 class GameEngine:
     def __init__(self) -> None:
         builder = ConfigBuilder()
-        data = builder.parse_config('src/config/window.json')
+        data = builder.parse_config('src/configs/window.json')
         self.title = data.title
         self.size = data.size
         self.background = data.bg_color
